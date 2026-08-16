@@ -32,3 +32,26 @@ const getCatFact = async (objDOM) => {
   }
 };
 getCatFact(catFactDOM);
+
+// === 改动 3：展示 localStorage 中的历史留言 ===
+// 读取之前存下的留言，渲染成列表展示在页面底部；没有留言时给出默认文案。
+const renderCatMessages = () => {
+  const listDOM = document.getElementById("cat-message-list");
+  if (!listDOM) return;
+  const history = JSON.parse(localStorage.getItem("catMessages") || "[]");
+  listDOM.innerHTML = "";
+  if (history.length === 0) {
+    const empty = document.createElement("li");
+    empty.innerText = "还没有人给咪咪留言，快来抢占沙发！";
+    listDOM.appendChild(empty);
+    return;
+  }
+  for (const record of history.slice(-5).reverse()) {
+    const item = document.createElement("li");
+    item.innerText = `[${record.time}] ${record.name}（${record.faction === "cat" ? "猫派" : "狗派"}）：${record.message}`;
+    listDOM.appendChild(item);
+  }
+};
+renderCatMessages();
+// 表单提交后同步刷新留言列表（提交处理在前面已把数据存入 localStorage）
+catForm.addEventListener("submit", () => renderCatMessages());
