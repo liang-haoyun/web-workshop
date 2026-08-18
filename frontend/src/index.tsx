@@ -16,6 +16,7 @@ const MainPanel = React.lazy(() => import("./MainPanel"));
 const LoginPage = React.lazy(() => import("./LoginPage"));
 const ChatBox = React.lazy(() => import("./ChatBox"));
 const FileShare = React.lazy(() => import("./FileShare"));
+const TruthOrDare = React.lazy(() => import("./TruthOrDare"));
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL!;
 axios.interceptors.request.use((config) => {
@@ -65,6 +66,7 @@ const App = () => {
   const user = getUser();
   const [chatBoxList, setChatBoxList] = useState<number[]>([]);
   const [fileShareList, setFileShareList] = useState<number[]>([]);
+  const [truthOrDareList, setTruthOrDareList] = useState<number[]>([]);
   const [currentDrag, setCurrentDrag] = useState<string>("");
 
   const draggableProps = {
@@ -87,6 +89,14 @@ const App = () => {
   };
   const removeFileShare = (idx: number) => {
     setFileShareList(fileShareList.filter((id) => id !== idx));
+  };
+  const addTruthOrDare = (idx: number) => {
+    if (!truthOrDareList.includes(idx)) {
+      setTruthOrDareList([...truthOrDareList, idx]);
+    }
+  };
+  const removeTruthOrDare = (idx: number) => {
+    setTruthOrDareList(truthOrDareList.filter((id) => id !== idx));
   };
 
   const { data, error, refetch } = graphql.useGetJoinedRoomsQuery({
@@ -111,6 +121,7 @@ const App = () => {
           refetchRooms={refetch}
           addChatBox={addChatBox}
           addFileShare={addFileShare}
+          addTruthOrDare={addTruthOrDare}
         />
       </Suspense>
       <MyDraggable key="dice" oid="dice" {...draggableProps}>
@@ -146,6 +157,22 @@ const App = () => {
             <FileShare
               room={data?.user_room[idx].room}
               handleClose={() => removeFileShare(idx)}
+            />
+          </Suspense>
+        </MyDraggable>
+      ))}
+      {truthOrDareList.map((idx) => (
+        <MyDraggable
+          key={`game-${idx}`}
+          oid={`game-${idx}`}
+          style={{ position: "absolute", right: 0 }}
+          {...draggableProps}
+        >
+          <Suspense fallback={null}>
+            <TruthOrDare
+              user={user}
+              room={data?.user_room[idx].room}
+              handleClose={() => removeTruthOrDare(idx)}
             />
           </Suspense>
         </MyDraggable>

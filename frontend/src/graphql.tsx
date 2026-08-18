@@ -1859,3 +1859,41 @@ export type GetUsersByUsernameQueryHookResult = ReturnType<typeof useGetUsersByU
 export type GetUsersByUsernameLazyQueryHookResult = ReturnType<typeof useGetUsersByUsernameLazyQuery>;
 export type GetUsersByUsernameSuspenseQueryHookResult = ReturnType<typeof useGetUsersByUsernameSuspenseQuery>;
 export type GetUsersByUsernameQueryResult = Apollo.QueryResult<GetUsersByUsernameQuery, GetUsersByUsernameQueryVariables>;
+export type GetRoomMembersQueryVariables = Exact<{
+  room_uuid: Scalars['uuid']['input'];
+}>;
+
+
+export type GetRoomMembersQuery = { __typename?: 'query_root', user_room: Array<{ __typename?: 'user_room', user: { __typename?: 'user', uuid: any, username: string } }> };
+
+export const GetRoomMembersDocument = gql`
+    query getRoomMembers($room_uuid: uuid!) {
+  user_room(where: {room_uuid: {_eq: $room_uuid}}) {
+    user {
+      uuid
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRoomMembersQuery__
+ *
+ * To run a query within a React component, call `useGetRoomMembersQuery` and pass it any options that fit your needs.
+ * When `useGetRoomMembersQuery` renders, it returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @example
+ * const { data, loading, error } = useGetRoomMembersQuery({
+ *   variables: {
+ *      room_uuid: // value for 'room_uuid'
+ *   },
+ * });
+ */
+export function useGetRoomMembersQuery(baseOptions?: Apollo.QueryHookOptions<GetRoomMembersQuery, GetRoomMembersQueryVariables> & ({ variables: GetRoomMembersQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useQuery<GetRoomMembersQuery, GetRoomMembersQueryVariables>(GetRoomMembersDocument, options);
+        }
+export type GetRoomMembersQueryHookResult = ReturnType<typeof useGetRoomMembersQuery>;
+export type GetRoomMembersQueryResult = Apollo.QueryResult<GetRoomMembersQuery, GetRoomMembersQueryVariables>;

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Input, message, Spin } from "antd";
 import { user } from "./getUser";
 import * as graphql from "./graphql";
+import { isGameMessage } from "./game";
 import { Bubble, Card, Container, Scroll, Text } from "./Components";
 
 interface ChatBoxProps {
@@ -124,14 +125,13 @@ const MessageFeed: React.FC<MessageFeedProps> = ({ user, messages }) => {
   return (
     <Scroll>
       {messages ? (
-        messages.map((message, index) => (
-          <div
-            ref={index === messages.length - 1 ? bottomRef : null}
-            key={index}
-          >
-            <MessageBubble user={user} message={message} />
-          </div>
-        ))
+        messages
+          .filter((message) => !isGameMessage(message.content))
+          .map((message, index, list) => (
+            <div ref={index === list.length - 1 ? bottomRef : null} key={index}>
+              <MessageBubble user={user} message={message} />
+            </div>
+          ))
       ) : (
         <Container style={{ height: "100%" }}>
           <Spin size="large" />

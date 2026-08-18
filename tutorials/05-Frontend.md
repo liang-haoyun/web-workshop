@@ -87,7 +87,7 @@ rimraf node_modules # 删除某个文件夹，如 node_modules
 
 ### 作业
 
-对于已完成数据库或后端作业的同学，可以选择其中之一完成相应的前端界面，如下：
+对于未完成数据库或后端作业的同学，可以选择其中之一完成相应的前端界面，如下：
 
 - 【数据库】聊天室的消息可以选择回复之前的某条消息，但没有多层回复或多重回复
   - 提示：可以使用右键菜单实现回复功能（JSX 元素的`onContextMenu`属性），可以使用如 react-contextify 的 npm 包来简化代码（[fkhadra/react-contexify: 👌 Add a context menu to your react app with ease (github.com)](https://github.com/fkhadra/react-contexify)）
@@ -100,7 +100,7 @@ rimraf node_modules # 删除某个文件夹，如 node_modules
 - 【后端】“痕迹抹除”：允许删除用户和删除文件
   - 提示：需要注意删除后的 UI 表现（如删除用户后应当退出登录）
 
-对于尚未完成以上前置作业的同学，也可以从以下几组功能需求中选择一组实现：
+对于已完成以上前置作业的同学，也可以从以下几组功能需求中选择一组实现：
 
 提示：你有可能需要修改 graphql 文件并重新生成 graphql.tsx 来完成一些数据库操作
 
